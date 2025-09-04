@@ -33,7 +33,7 @@ class App(tk.Tk):
         self.maxsize(400, 550)
 
         container = tk.Frame(self, width=400, height=550)
-        container.pack_propagate(False) 
+        container.pack_propagate(False)  # container kendi boyutunu korusun
         container.pack(fill="both", expand=True)
 
         self.frames = {}
@@ -47,7 +47,7 @@ class App(tk.Tk):
         for f in self.frames.values():
             f.pack_forget()
         if page_class == ViewPasswordsPage:
-            self.frames[page_class].refresh_list() 
+            self.frames[page_class].refresh_list()  # listeyi güncelle
         self.frames[page_class].pack(fill="both", expand=True)
 
 
@@ -199,9 +199,11 @@ class ViewPasswordsPage(tk.Frame):
         super().__init__(parent)
         self.controller = controller
 
+        # Yeni Şifre Ekle butonu sağ üst köşede
         add_btn = tk.Button(self, text="Yeni Şifre Ekle", command=lambda: controller.show_frame(AddPasswordPage))
         add_btn.place(relx=1.0, x=-30, y=10, anchor="ne")
 
+        # Scrollable frame oluştur
         self.canvas = tk.Canvas(self, borderwidth=0, width=380, height=480)
         self.scroll_frame = tk.Frame(self.canvas)
         self.scrollbar = tk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
@@ -228,6 +230,7 @@ class ViewPasswordsPage(tk.Frame):
         entry.pack(pady=5)
         entry.focus_set()
 
+        # Onayla butonu
         def check_code():
             sec_code = entry.get().strip()
             if not sec_code:
@@ -236,9 +239,11 @@ class ViewPasswordsPage(tk.Frame):
 
             decrypted = cryptocode.decrypt(info["password"], sec_code)
             if decrypted:
+                # Entry ve butonu devre dışı bırak
                 entry.config(state="disabled")
                 onayla_btn.config(state="disabled")
 
+                # Şifreyi göster ve kopyala butonu ekle
                 tk.Label(popup, text=f"Şifre: {decrypted}").pack(pady=10)
                 tk.Button(popup, text="Kopyala", command=lambda: self.clipboard_clear() or self.clipboard_append(decrypted)).pack(pady=5)
             else:
@@ -259,6 +264,7 @@ class ViewPasswordsPage(tk.Frame):
             self.refresh_list()
 
     def refresh_list(self):
+        # Önce scroll_frame içindeki widgetleri temizle
         for widget in self.scroll_frame.winfo_children():
             widget.destroy()
 
