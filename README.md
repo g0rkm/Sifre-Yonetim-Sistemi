@@ -29,3 +29,5 @@ python main.py
 * Windows için test edilmiştir
 * Şifreler gizli olarak `AppData\Local\MyPasswordApp` içinde saklanır
 
+## Lisans
+Bu proje [MIT](./LICENSE) lisansı ile lisanslanmıştır.
